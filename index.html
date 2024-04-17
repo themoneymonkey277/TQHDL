@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đồ án cuối kỳ thực hành</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+
+        .grid-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Đồ án cuối kỳ thực hành</h1>
+        <div class="grid-container">
+            <div class="grid-item KD" onclick="redirectTo('/KhanhDuyD3/index.html')">
+                <h2>Khánh Duy</h2>
+            </div>
+            <div class="grid-item KL" onclick="redirectTo('/KhanhLinhD3/index.html')">
+                <h2>Khánh Linh</h2>
+            </div>
+            <div class="grid-item HD" onclick="redirectTo('/HoangDuyD3/index.html')">
+                <h2>Hoàng Duy</h2>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function redirectTo(url) {
+        // Get the current URL
+        var currentUrl = window.location.href;
+
+        // Remove the index.html from the current URL
+        var baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/"));
+
+        // Redirect to the specified URL
+        window.location.href = baseUrl + url;
+    }
+</script>
+
+</html>
