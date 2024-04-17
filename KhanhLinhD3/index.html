@@ -135,7 +135,7 @@
     </script>
 
     <div class="chart-container">
-        <h1>Biểu đồ báo cáo số lượng tác phẩm điêu khắc theo từng nghệ sĩ</h1>
+        <h1>Biểu đồ tác phẩm điêu khắc theo từng chất liệu</h1>
         <div id="chart2"></div>
     </div>
 
@@ -184,7 +184,7 @@
                 .attr("height", function (d) { return height - y(d.count); })
                 .attr("fill", function (d, i) {
 
-                    return ["#ff7f0e", "#1f77b4", "#2ca02c"][i];
+                    return ["#e56ffc", "#b509d6", "#810599","#300338"][i];
                 });
 
 
