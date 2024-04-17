@@ -33,7 +33,7 @@
     </div>
 
     <div class="chart-container">
-        <h1>Biểu đồ số lượng tai nạn Hit and Run theo phường</h1>
+        <h1>Biểu đồ số lượng tai nạn Hit and Run theo thời tiết</h1>
         <div id="chart2" class="chart"></div>
     </div>
 
@@ -152,7 +152,7 @@
 
         // Code for the second chart
         d3.csv("Traffic_Accidents.csv").then(function (data) {
-            var countData = countAccidentsByPrecinct(data);
+            var countData = countAccidentsByWeather(data);
             // Sắp xếp countData theo số lượng giảm dần
             countData.sort(function (a, b) {
                 return b.count - a.count;
@@ -173,7 +173,7 @@
 
             // Thiết lập scale cho trục x và y
             var x = d3.scaleBand()
-                .domain(countData.map(function (d) { return d.precinct; }))
+                .domain(countData.map(function (d) { return d.weather; }))
                 .range([0, width])
                 .padding(0.1);
 
@@ -200,7 +200,7 @@
                 .data(countData)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function (d) { return x(d.precinct); })
+                .attr("x", function (d) { return x(d.weather); })
                 .attr("y", function (d) { return y(d.count); })
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d.count); })
@@ -211,7 +211,7 @@
                 .data(countData)
                 .enter().append("text")
                 .attr("class", "label")
-                .attr("x", function (d) { return x(d.precinct) + x.bandwidth() / 2; })
+                .attr("x", function (d) { return x(d.weather) + x.bandwidth() / 2; })
                 .attr("y", function (d) { return y(d.count) - 5; }) // Dịch lên một chút để tránh chồng chéo
                 .text(function (d) { return d.count; })
                 .attr("text-anchor", "middle")
@@ -239,27 +239,27 @@
             console.error("Error loading the data: " + error);
         });
 
-        function countAccidentsByPrecinct(data) {
+        function countAccidentsByWeather(data) {
             var HitAndRunCounts = {};
 
             // Lặp qua mảng dữ liệu và tính số lượng tai nạn Hit and Run cho mỗi phường
             data.forEach(function (d) {
-                var precinct = d["Precinct"];
+                var Weather = d["Weather Description"];
                 var isHitAndRun = d["Hit and Run"];
 
                 // Kiểm tra nếu là tai nạn Hit and Run
                 if (isHitAndRun === "TRUE") {
-                    if (HitAndRunCounts[precinct]) {
-                        HitAndRunCounts[precinct]++;
+                    if (HitAndRunCounts[Weather]) {
+                        HitAndRunCounts[Weather]++;
                     } else {
-                        HitAndRunCounts[precinct] = 1;
+                        HitAndRunCounts[Weather] = 1;
                     }
                 }
             });
 
             // Chuyển đổi đối tượng thành mảng các đối tượng
             var countData = Object.keys(HitAndRunCounts).map(function (key) {
-                return { precinct: key, count: HitAndRunCounts[key] };
+                return { weather: key, count: HitAndRunCounts[key] };
             });
 
             return countData;
