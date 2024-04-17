@@ -36,7 +36,8 @@ d3.csv("Art_in_Public_Places.csv").then(function(data) {
         .attr("x", width / 2)
         .attr("y", -margin.top)
         .attr("text-anchor", "middle")
-        .style("font-size", "16px")
+        .style("font-size", "24px")
+        .style("font-weight", "bold")
         .text("Top 5 nghệ sĩ có nhiều tác phẩm nhất");
     
     svg.append("g")
