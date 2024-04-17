@@ -1,0 +1,27 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 200vh; 
+  flex-direction: column; 
+}
+
+#chart-container-task1 {
+  display: inline-block;
+  margin-top: 200px;
+}
+
+#chart-container-task2 {
+  display: inline-block;
+  margin-top: 60px;
+}
+
+svg {
+  margin-top: 80px; 
+}
+
+
+
