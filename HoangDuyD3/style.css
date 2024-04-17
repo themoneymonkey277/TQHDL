@@ -1,0 +1,47 @@
+/* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Canh giữa theo chiều ngang */
+    align-items: center; /* Canh giữa theo chiều dọc */
+    height: 200vh; /* Chiều cao của màn hình */
+    flex-direction: column; 
+}
+
+#chart-container-task1 {
+    display: inline-block;
+    margin-top: -200px; /* Khoảng cách giữa biểu đồ task 1 và đầu trang */
+}
+
+#chart-container-task2 {
+    display: inline-block;
+    margin-top: 100px; /* Khoảng cách giữa biểu đồ task 2 và đầu trang */
+}
+
+
+svg {
+    overflow: visible;
+}
+
+.axis text {
+    font-size: 10px; /* Reduced font size for axis labels */
+}
+
+.bar-label {
+    font-size: 10px; /* Reduced font size for bar labels */
+}
+
+.bar {
+    transition: fill 0.2s; /* Add transition effect for bar color */
+}
+
+.bar:hover {
+    fill: darkorange; /* Change color on hover */
+}
+
+.axis-x-label {
+    margin-top: 10px; /* Thêm khoảng cách 10px giữa nhãn trục x và trục hoành */
+}
