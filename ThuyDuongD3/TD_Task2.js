@@ -53,7 +53,7 @@ d3.csv("Traffic_Accidents.csv").then(function(data) {
   svg.selectAll(".bar")
     .data(countData)
     .enter().append("rect")
-    .attr("class", "bar")
+    .attr("class", "bar2")
     .attr("x", function(d) { return x(d.illumination); })
     .attr("y", function(d) { return y(d.count); })
     .attr("width", x.bandwidth())

@@ -24,4 +24,9 @@ svg {
 }
 
 
+.bar2:hover{
+  fill:red;
+  cursor: pointer;
+}
+
 
