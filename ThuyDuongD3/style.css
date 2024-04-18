@@ -9,6 +9,21 @@ body {
   flex-direction: column; 
 }
 
+.task-1-wrapper{
+  position: relative;
+  width:100%;
+  display: flex;
+  justify-content: start;
+}
+
+.task-2-wrapper{
+  position: relative;
+  width:100%;
+  display: flex;
+  justify-content: start;
+  padding-left: 10%;
+}
+
 #chart-container-task1 {
   display: inline-block;
   margin-top: 200px;
@@ -29,4 +44,17 @@ svg {
   cursor: pointer;
 }
 
+.review1{
+  width:400px;
+  position: absolute;
+  right: 5%;
+  bottom:30%;
+}
+
+.review2{
+  width:400px;
+  position: absolute;
+  right: 6%;
+  bottom:30%;
+}
 
