@@ -1,24 +1,21 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
   display: flex;
-  justify-content: center; 
-  align-items: center; 
-  height: 200vh; 
-  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.task-1-wrapper{
+.task-1-wrapper {
   position: relative;
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: start;
 }
 
-.task-2-wrapper{
+.task-2-wrapper {
   position: relative;
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: start;
   padding-left: 10%;
@@ -26,35 +23,34 @@ body {
 
 #chart-container-task1 {
   display: inline-block;
-  margin-top: 200px;
+  margin-top: 30px;
 }
 
 #chart-container-task2 {
   display: inline-block;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 svg {
-  margin-top: 80px; 
+  margin-top: 50px;
 }
 
 
-.bar2:hover{
-  fill:red;
+.bar2:hover {
+  fill: red;
   cursor: pointer;
 }
 
-.review1{
-  width:400px;
+.review1 {
+  width: 400px;
   position: absolute;
   right: 5%;
-  bottom:30%;
+  bottom: 30%;
 }
 
-.review2{
-  width:400px;
+.review2 {
+  width: 400px;
   position: absolute;
   right: 6%;
-  bottom:30%;
+  bottom: 30%;
 }
-

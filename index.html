@@ -25,9 +25,14 @@
             margin-bottom: 30px;
         }
 
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             grid-gap: 20px;
         }
 
@@ -38,42 +43,45 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             cursor: pointer;
         }
+
+        a {
+            text-decoration: none;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>Đồ án cuối kỳ thực hành</h1>
+        <h2>Nhóm 7</h2>
         <div class="grid-container">
-            <div class="grid-item KD" onclick="redirectTo('/KhanhDuyD3/index.html')">
-                <h2>Khánh Duy</h2>
-            </div>
-            <div class="grid-item KL" onclick="redirectTo('/KhanhLinhD3/index.html')">
-                <h2>Khánh Linh</h2>
-            </div>
-            <div class="grid-item HD" onclick="redirectTo('/HoangDuyD3/index.html')">
-                <h2>Hoàng Duy</h2>
-            </div>
-            <div class="grid-item TD" onclick="redirectTo('/ThuyDuongD3/index.html')">
-                <h2>Thùy Dương</h2>
-            </div>
-            <div class="grid-item TD" onclick="redirectTo('/YNhiD3/index.html')">
-                <h2>Yến Nhi</h2>
-            </div>
+            <a href="/KhanhDuyD3/index.html">
+                <div class="grid-item KD">
+                    <h2>Khánh Duy</h2>
+                </div>
+            </a>
+            <a href="/KhanhLinhD3/index.html">
+                <div class="grid-item KL">
+                    <h2>Khánh Linh</h2>
+                </div>
+            </a>
+            <a href="/HoangDuyD3/index.html">
+                <div class="grid-item HD">
+                    <h2>Hoàng Duy</h2>
+                </div>
+            </a>
+            <a href="/ThuyDuongD3/index.html">
+                <div class="grid-item TD">
+                    <h2>Thùy Dương</h2>
+                </div>
+            </a>
+            <a href="/YNhiD3/index.html">
+                <div class="grid-item TD">
+                    <h2>Yến Nhi</h2>
+                </div>
+            </a>
         </div>
     </div>
 </body>
-<script>
-    function redirectTo(url) {
-        // Get the current URL
-        var currentUrl = window.location.href;
-
-        // Remove the index.html from the current URL
-        var baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/"));
-
-        // Redirect to the specified URL
-        window.location.href = baseUrl + url;
-    }
-</script>
 
 </html>

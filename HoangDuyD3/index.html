@@ -1,16 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Visualization</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Trực Quan Hóa Dữ Liệu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 24px;
+        }
+
+        h3 {
+            color: #888;
+            font-size: 16px;
+            margin-top: 20px;
+            text-align: center;
+            /* Điều chỉnh để căn giữa */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        .question-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
 </head>
+
 <body>
-    <div id="chart-container-task1"></div>
-    <div id="chart-container-task2"></div>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="HD_task1.js"></script>
-    <script src="HD_task2.js"></script>
+    <div id="container">
+        <h1>THỰC HÀNH TRỰC QUAN HÓA DỮ LIỆU</h1>
+        <h3>Đinh Hoàng Duy - 21127027</h3>
+        <div class="question-list">
+            <h2>Lựa chọn biểu đồ trực quan:</h2>
+            <ul>
+                <li><a href="HoangDuy1.html">1. Báo cáo số vụ tai nạn Hit-and-run theo từng thành phố</a></li>
+                <li><a href="HoangDuy2.html">2. Top 5 nghệ sĩ có nhiều tác phẩm nhất</a></li>
+            </ul>
+        </div>
+    </div>
 </body>
+
 </html>

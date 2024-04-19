@@ -1,5 +1,5 @@
 // Đọc dữ liệu từ file CSV cho task 1 và vẽ biểu đồ bar chart
-d3.csv("Traffic_Accidents.csv").then(function(data) {
+d3.csv("Traffic_Accidents.csv").then(function (data) {
     // Lọc dữ liệu chỉ chứa các vụ tai nạn hit-and-run
     const hitAndRunData = data.filter(d => d['Hit and Run'] === "TRUE");
 
@@ -7,8 +7,8 @@ d3.csv("Traffic_Accidents.csv").then(function(data) {
     const accidentsByCity = d3.rollup(hitAndRunData, v => v.length, d => d.City);
 
     const sortedAccidents = Array.from(accidentsByCity, ([city, count]) => ({ city, count }))
-                                .sort((a, b) => d3.descending(a.count, b.count))
-                                //.slice(0, 10);
+        .sort((a, b) => d3.descending(a.count, b.count))
+    //.slice(0, 10);
 
     const margin = { top: 40, right: 30, bottom: 70, left: 90 };
     const width = 800 - margin.left - margin.right;
@@ -38,7 +38,7 @@ d3.csv("Traffic_Accidents.csv").then(function(data) {
         .style("font-size", "24px")
         .style("font-weight", "bold")
         .text("Số vụ tai nạn Hit-and-run theo từng thành phố");
-    
+
     svg.append("g")
         .attr("class", "x-axis")
         .attr("transform", "translate(0," + height + ")")
@@ -71,8 +71,8 @@ d3.csv("Traffic_Accidents.csv").then(function(data) {
         .style("text-anchor", "middle")
         .text("Số lượng tai nạn Hit-and-run");
     const colorScale = d3.scaleSequential()
-                         .interpolator(d3.interpolateBlues)
-                         .domain([sortedAccidents.length, 0]); // Đảo ngược thứ tự màu sắc
+        .interpolator(d3.interpolateBlues)
+        .domain([sortedAccidents.length, 0]); // Đảo ngược thứ tự màu sắc
 
     svg.selectAll(".bar")
         .data(sortedAccidents)
@@ -95,5 +95,5 @@ d3.csv("Traffic_Accidents.csv").then(function(data) {
         .attr("dy", "1em") // Đặt khoảng cách từ thanh bar
         .attr("text-anchor", "middle")
         .text(d => d.count);
-    
+
 });

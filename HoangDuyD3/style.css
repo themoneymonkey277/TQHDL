@@ -2,23 +2,37 @@
 
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     display: flex;
-    justify-content: center; /* Canh giữa theo chiều ngang */
-    align-items: center; /* Canh giữa theo chiều dọc */
-    height: 200vh; /* Chiều cao của màn hình */
-    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.task-1-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: start;
 }
 
 #chart-container-task1 {
     display: inline-block;
-    margin-top: -200px; /* Khoảng cách giữa biểu đồ task 1 và đầu trang */
+    margin-top: 100px;
+    display: flex;
+    /* Khoảng cách giữa biểu đồ task 1 và đầu trang */
+}
+
+.review1 {
+    width: 400px;
+    position: absolute;
+    right: 5%;
+    bottom: 30%;
 }
 
 #chart-container-task2 {
     display: inline-block;
-    margin-top: 100px; /* Khoảng cách giữa biểu đồ task 2 và đầu trang */
+    margin-top: 100px;
+    /* Khoảng cách giữa biểu đồ task 2 và đầu trang */
 }
 
 
@@ -27,21 +41,26 @@ svg {
 }
 
 .axis text {
-    font-size: 10px; /* Reduced font size for axis labels */
+    font-size: 10px;
+    /* Reduced font size for axis labels */
 }
 
 .bar-label {
-    font-size: 10px; /* Reduced font size for bar labels */
+    font-size: 10px;
+    /* Reduced font size for bar labels */
 }
 
 .bar {
-    transition: fill 0.2s; /* Add transition effect for bar color */
+    transition: fill 0.2s;
+    /* Add transition effect for bar color */
 }
 
 .bar:hover {
-    fill: darkorange; /* Change color on hover */
+    fill: darkorange;
+    /* Change color on hover */
 }
 
 .axis-x-label {
-    margin-top: 10px; /* Thêm khoảng cách 10px giữa nhãn trục x và trục hoành */
+    margin-top: 10px;
+    /* Thêm khoảng cách 10px giữa nhãn trục x và trục hoành */
 }
