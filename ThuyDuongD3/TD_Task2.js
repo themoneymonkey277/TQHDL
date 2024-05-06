@@ -1,10 +1,6 @@
 d3.csv("Traffic_Accidents.csv")
-  .then(function (data) {
+  .then(function(data) {
     var countData = countAccidentsByIllumination(data);
-    // Sắp xếp countData theo số lượng giảm dần
-    countData.sort(function (a, b) {
-      return b.count - a.count;
-    });
 
     // Thiết lập kích thước của biểu đồ
     var width = 800;
@@ -22,22 +18,13 @@ d3.csv("Traffic_Accidents.csv")
     // Thiết lập scale cho trục x và y
     var x = d3
       .scaleBand()
-      .domain(
-        countData.map(function (d) {
-          return d.illumination;
-        })
-      )
+      .domain(countData.map(function(d) { return d.illumination; }))
       .range([0, width])
       .padding(0.1);
 
     var y = d3
       .scaleLinear()
-      .domain([
-        0,
-        d3.max(countData, function (d) {
-          return d.count;
-        }),
-      ])
+      .domain([0, d3.max(countData, function(d) { return d.count2020 + d.count2021; })])
       .nice()
       .range([height, 0]);
 
@@ -48,9 +35,7 @@ d3.csv("Traffic_Accidents.csv")
       .attr("text-anchor", "middle")
       .style("font-size", "21px")
       .style("font-weight", "bold")
-      .text(
-        "Báo cáo số lượng tai nạn không xảy ra va chạm theo từng loại thông tin chiếu sáng"
-      );
+      .text("Báo cáo số lượng tai nạn theo điều kiện ánh sáng trong năm 2020 và 2021");
 
     // Tạo trục x và y
     svg
@@ -65,105 +50,104 @@ d3.csv("Traffic_Accidents.csv")
 
     svg.append("g").call(d3.axisLeft(y));
 
-    // Vẽ các cột
-    svg
-      .selectAll(".bar")
-      .data(countData)
-      .enter()
-      .append("rect")
-      .attr("class", "bar2")
-      .attr("x", function (d) {
-        return x(d.illumination);
-      })
-      .attr("y", function (d) {
-        return y(d.count);
-      })
+    // Vẽ các cột chồng
+    var stack = d3.stack()
+      .keys(["count2020", "count2021"])
+      .order(d3.stackOrderNone)
+      .offset(d3.stackOffsetNone);
+    
+    var stackedData = stack(countData);
+
+    svg.selectAll(".bar")
+      .data(stackedData)
+      .enter().append("g")
+      .attr("fill", function(d, i) { return ["#67BBDB", "#FFC107"][i]; })
+      .selectAll("rect")
+      .data(function(d) { return d; })
+      .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.illumination); })
+      .attr("y", function(d) { return y(d[1]); })
+      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width", x.bandwidth())
-      .attr("height", function (d) {
-        return height - y(d.count);
-      })
-      .attr("fill", function (d, i) {
-        // Chọn màu theo chỉ số của cột
-        return [
-          "#FF8F00",
-          "#FFA000",
-          "#FFB300",
-          "#FFC107",
-          "#FFCA28",
-          "#FFD54F",
-          "#FFE082",
-          "#FFECB3",
-          "#FFF8DC",
-        ][i];
-      });
+      .append("title") 
+      .text(function(d) { 
+        return d[1] - d[0];
+    });
+  // Tạo chú thích
+  var legend = svg.selectAll(".legend")
+    .data(["2020", "2021"])
+    .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-    // Thêm label phía trên của mỗi cột
-    svg
-      .selectAll(".text")
-      .data(countData)
-      .enter()
-      .append("text")
-      .attr("class", "label")
-      .attr("x", function (d) {
-        return x(d.illumination) + x.bandwidth() / 2;
-      })
-      .attr("y", function (d) {
-        return y(d.count) - 5;
-      })
-      .text(function (d) {
-        return d.count;
-      })
-      .attr("text-anchor", "middle")
-      .attr("font-size", "12px")
-      .attr("fill", "black");
+  legend.append("rect")
+    .attr("x", width - 18)
+    .attr("width", 18)
+    .attr("height", 18)
+    .attr("fill", function(d, i) { return ["#67BBDB", "#FFC107"][i]; });
 
-    // Thêm tên cho trục x
-    svg
-      .append("text")
-      .attr(
-        "transform",
-        "translate(" + width / 2 + " ," + (height + margin.top + 40) + ")"
-      )
-      .style("text-anchor", "middle")
-      .style("color", "red")
-      .style("font-weight", "bold")
-      .text("Loại chiếu sáng");
+  legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 9)
+    .attr("dy", ".35em")
+    .style("text-anchor", "end")
+    .text(function(d) { return d; });
 
-    // Thêm tên cho trục y
-    svg
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x", 0 - height / 2)
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .style("font-weight", "bold")
-      .text("Số lượng tai nạn không xảy ra va chạm");
+  // Thêm tên cho trục x
+  svg
+    .append("text")
+    .attr("transform", "translate(" + width / 2 + " ," + (height + margin.top + 40) + ")")
+    .style("text-anchor", "middle")
+    .style("color", "red")
+    .style("font-weight", "bold")
+    .text("Điều kiện ánh sáng");
+
+  // Thêm tên cho trục y
+  svg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - height / 2)
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("font-weight", "bold")
+    .text("Số lượng vụ tai nạn");
   })
-  .catch(function (error) {
+  .catch(function(error) {
     console.error("Error loading the data: " + error);
   });
 
 function countAccidentsByIllumination(data) {
   var illuminationCounts = {};
 
-  // Lặp qua mảng dữ liệu và tính số lượng tai nạn không xảy ra va chạm cho mỗi loại Illumination Description
-  data.forEach(function (d) {
-    var illumination = d["Illumination Description"];
-    var collisionType = d["Collision Type Description"];
-
-    // Kiểm tra nếu loại va chạm là "NOT COLLISION W/MOTOR VEHICLE-TRANSPORT"
-    if (collisionType === "NOT COLLISION W/MOTOR VEHICLE-TRANSPORT") {
-      if (illuminationCounts[illumination]) {
-        illuminationCounts[illumination]++;
-      } else {
-        illuminationCounts[illumination] = 1;
+  data.forEach(function(d) {
+    var illumination = d["Illumination Description"] || "NULL"; 
+    var dateTime = d["Date and Time"];
+    var year = new Date(dateTime).getFullYear();
+    
+    if (year === 2020 || year === 2021) {
+      if (!illuminationCounts[illumination]) {
+        illuminationCounts[illumination] = { "count2020": 0, "count2021": 0 };
+      }
+     
+      if (year === 2020) {
+        illuminationCounts[illumination]["count2020"]++;
+      } else if (year === 2021) {
+        illuminationCounts[illumination]["count2021"]++;
       }
     }
   });
 
-  var countData = Object.keys(illuminationCounts).map(function (key) {
-    return { illumination: key, count: illuminationCounts[key] };
+  var countData = Object.keys(illuminationCounts).map(function(key) {
+    return { 
+      illumination: key, 
+      count2020: illuminationCounts[key]["count2020"],
+      count2021: illuminationCounts[key]["count2021"]
+    };
+  });
+
+  countData.sort(function(a, b) {
+    return b.count2020 - a.count2020;
   });
 
   return countData;
