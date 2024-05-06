@@ -31,13 +31,13 @@ d3.csv("Traffic_Accidents.csv").then(function (data) {
         .nice()
         .range([height, 0]);
 
-    svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", -margin.top)
-        .attr("text-anchor", "middle")
-        .style("font-size", "24px")
-        .style("font-weight", "bold")
-        .text("Số vụ tai nạn Hit-and-run theo từng thành phố");
+    // svg.append("text")
+    //     .attr("x", width / 2)
+    //     .attr("y", -margin.top)
+    //     .attr("text-anchor", "middle")
+    //     .style("font-size", "24px")
+    //     .style("font-weight", "bold")
+    //     .text("Số vụ tai nạn Hit-and-run theo từng thành phố");
 
     svg.append("g")
         .attr("class", "x-axis")

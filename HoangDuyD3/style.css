@@ -17,7 +17,8 @@ body {
 
 #chart-container-task1 {
     display: inline-block;
-    margin-top: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     display: flex;
     /* Khoảng cách giữa biểu đồ task 1 và đầu trang */
 }
@@ -31,7 +32,7 @@ body {
 
 #chart-container-task2 {
     display: inline-block;
-    margin-top: 100px;
+    margin-top:20px;
     /* Khoảng cách giữa biểu đồ task 2 và đầu trang */
 }
 
@@ -63,4 +64,12 @@ svg {
 .axis-x-label {
     margin-top: 10px;
     /* Thêm khoảng cách 10px giữa nhãn trục x và trục hoành */
+}
+.bold-text {
+    font-weight: bold;
+}
+
+.comment-container {
+    margin-left: 30px;
+    margin-right: 30px;
 }
