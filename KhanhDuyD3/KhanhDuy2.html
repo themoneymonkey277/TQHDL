@@ -4,137 +4,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khánh Duy 2</title>
+    <title>Hit and Run Accidents by Month (2020)</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-        #chart {
-            margin: auto;
-            /* Căn giữa biểu đồ */
+        .chart-tooltip {
+            position: absolute;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            pointer-events: none;
+            display: none;
+        }
+
+        #chart-container {
+            position: relative;
             text-align: center;
-            /* Căn giữa nội dung trong thẻ div */
+        }
+
+        #chart {
+            display: inline-block;
+        }
+
+        .axis text {
+            font-size: 12px;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .bar-label {
+            font-size: 12px;
+            fill: #000;
+            text-anchor: middle;
         }
     </style>
 </head>
 
 <body>
-    <h1 style="text-align: center;">Biểu đồ số lượng tai nạn Hit and Run theo phường</h1>
-    <div id="chart"></div>
-
+    <h3 style="margin-left: 50px;">Câu hỏi 4: </h3>
+    <h3 style="margin-left: 80px;">Yêu cầu: Báo cáo số lượng tai nạn Hit and Run qua từng tháng trong năm 2020</h3>
+    <h3 style="margin-left: 80px;">Thiết kế biểu đồ:</h3>
+    <p style="margin-left: 100px;">Ở trong yêu cầu này, ta sẽ sử dụng 2 thuộc tính là "Date and Time" và "Hit and Run"
+        để đếm số lượng tai nạn Hit and Run trong năm 2020
+    </p>
+    <p style="margin-left: 100px;">Ta sẽ sử dụng các kênh sau</p>
+    <p style="margin-left: 100px;">- Vị trí theo chiều dọc: Thuộc tính số lượng tai nạn Hit and Run</p>
+    <p style="margin-left: 100px;">- Vị trí theo chiều ngang: Thuộc tính thời gian (Tháng)</p>
+    <p style="margin-left: 100px;">- Màu sắc để tăng hiệu quả biểu đạt</p>
+    <p style="margin-left: 100px;">Để thể hiện thuộc tính thay đổi theo thời gian, ta thể hiện bằng biểu đồ vùng (Area)
+    </p>
+    <h1 style="text-align: center;">Hit and Run Accidents by Month (2020)</h1>
+    <div id="chart-container">
+        <svg id="chart" width="1000" height="500"></svg>
+        <div id="tooltip" class="chart-tooltip"></div>
+    </div>
+    <h3 style="margin-left: 80px;">Đánh giá biểu đồ:</h3>
+    <div style="margin-left: 100px; width: 3/4; margin-right: 100px;">
+        <p>1.Trend chung: Biểu đồ cho thấy một số biến động trong số lượng tai nạn hit and run qua các tháng trong năm.
+            Có
+            sự biến động đáng chú ý, ví dụ như sự tăng đột ngột từ tháng 4 đến tháng 5, sau đó lại giảm vào tháng 6 và
+            7.
+        </p>
+        <p>2.Đỉnh điểm và điểm thấp: Biểu đồ cung cấp thông tin về các đỉnh điểm (các tháng có số vụ tai nạn cao nhất)
+            và
+            điểm thấp (các tháng có số vụ tai nạn thấp nhất) trong năm. Điều này có thể giúp nhận biết các thời điểm có
+            nguy
+            cơ cao hơn và cần chú ý hơn.</p>
+        3.Thay đổi mức độ: Có thể nhận thấy một số tháng có số vụ tai nạn giảm đột ngột sau một thời gian tăng, hoặc
+        ngược
+        lại. Điều này có thể gợi ý về tác động của các biện pháp an toàn giao thông hoặc các yếu tố bên ngoài khác.</p>
+    </div>
     <script>
+        // Define parseDate function
+        var parseDate = d3.timeParse("%m/%d/%Y %H:%M");
+
+        // Load data from CSV file
         d3.csv("Traffic_Accidents.csv").then(function (data) {
-            var countData = countAccidentsByPrecinct(data);
-            // Sắp xếp countData theo số lượng giảm dần
-            countData.sort(function (a, b) {
-                return b.count - a.count;
+            // Filter data for hit and run accidents in 2020
+            var hitAndRunData = data.filter(function (d) {
+                var date = parseDate(d["Date and Time"]);
+                return date.getFullYear() === 2020 && d["Hit and Run"] === "TRUE";
             });
 
-            // Thiết lập kích thước của biểu đồ
-            var width = 700;
-            var height = 400;
-            var margin = { top: 20, right: 20, bottom: 90, left: 70 };
+            // Parse date and count hit and run accidents by month
+            hitAndRunData.forEach(function (d) {
+                d.date = parseDate(d["Date and Time"]);
+            });
 
-            // Tạo một đối tượng SVG và thiết lập kích thước
+            var accidentsByMonth = d3.rollup(hitAndRunData, v => v.length, d => d3.timeMonth(d.date));
+
+            // Convert map to array of objects
+            var monthlyData = Array.from(accidentsByMonth, ([key, value]) => ({ month: key, count: value }));
+
+            // Sort data by month
+            monthlyData.sort((a, b) => a.month - b.month);
+
+            // Set up SVG
+            var margin = { top: 50, right: 50, bottom: 70, left: 70 },
+                width = 1000 - margin.left - margin.right,
+                height = 500 - margin.top - margin.bottom;
+
             var svg = d3.select("#chart")
-                .append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Thiết lập scale cho trục x và y
-            var x = d3.scaleBand()
-                .domain(countData.map(function (d) { return d.precinct; }))
-                .range([0, width])
-                .padding(0.1);
+            // Set up scales
+            var x = d3.scaleUtc()
+                .domain(d3.extent(monthlyData, d => d.month))
+                .range([0, width]);
 
             var y = d3.scaleLinear()
-                .domain([0, d3.max(countData, function (d) { return d.count; })])
+                .domain([0, d3.max(monthlyData, d => d.count)])
                 .nice()
                 .range([height, 0]);
 
-            // Tạo trục x và y
+            // Set up area generator
+            var area = d3.area()
+                .x(d => x(d.month))
+                .y0(height)
+                .y1(d => y(d.count));
+
+            // Draw area
+            svg.append("path")
+                .datum(monthlyData)
+                .attr("fill", "steelblue")
+                .attr("fill-opacity", 0.3) // Đặt fill-opacity để làm cho phần vùng trở nên nhạt hơn
+                .attr("d", area);
+
+            // Set up line generator
+            var line = d3.line()
+                .x(d => x(d.month))
+                .y(d => y(d.count));
+
+            // Draw line
+            svg.append("path")
+                .datum(monthlyData)
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-width", 2)
+                .attr("d", line);
+
+            // Add interactivity - tooltip
+            var tooltip = d3.select("#tooltip");
+            var dot = svg.append("circle")
+                .attr("r", 5)
+                .attr("fill", "blue")
+                .style("display", "none"); // Ẩn nó ban đầu
+
+            // Add interactivity - tooltip
+            svg.append("rect")
+                .attr("width", width)
+                .attr("height", height)
+                .style("fill", "none")
+                .style("pointer-events", "all")
+                .on("mouseover", function () {
+                    tooltip.style("display", "block");
+                })
+                // Khi di chuyển chuột
+                .on("mousemove", function (event) {
+                    var mouseCoords = d3.pointer(event);
+                    var bisect = d3.bisector(function (d) { return d.month; }).left;
+                    var x0 = x.invert(mouseCoords[0]);
+                    var i = bisect(monthlyData, x0, 1);
+                    var d0 = monthlyData[i - 1];
+                    var d1 = monthlyData[i];
+                    var d = x0 - d0.month > d1.month - x0 ? d1 : d0;
+                    var tooltipWidth = parseInt(tooltip.style("width"), 10);
+                    var tooltipHeight = parseInt(tooltip.style("height"), 10);
+                    var tooltipLeft = mouseCoords[0] + 150;
+                    var tooltipTop = mouseCoords[1] + 10;
+                    tooltip.html("<strong>Month:</strong> " + d3.timeFormat("%B %Y")(d.month) + "<br><strong>Count:</strong> " + d.count)
+                        .style("left", tooltipLeft + "px")
+                        .style("top", tooltipTop + "px");
+
+                    // Cập nhật vị trí của dấu chấm
+                    dot.attr("cx", x(d.month)) // Set vị trí x của dấu chấm tương ứng với tháng
+                        .attr("cy", y(d.count)) // Set vị trí y của dấu chấm tương ứng với số lượng tai nạn
+                        .style("display", "block"); // Hiển thị dấu chấm
+                })
+
+                // Khi rời chuột khỏi
+                .on("mouseout", function () {
+                    tooltip.style("display", "none");
+                    dot.style("display", "none"); // Ẩn dấu chấm khi rời chuột
+                });
+
+            // Add bar labels
+            svg.selectAll(".bar-label")
+                .data(monthlyData)
+                .enter()
+                .append("text")
+                .attr("class", "bar-label")
+                .attr("x", function (d) { return x(d.month); })
+                .attr("y", function (d) { return y(d.count); })
+                .attr("dy", "-5")
+                .text(function (d) { return d.count; });
+
+            // Add x axis
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x))
+                .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.timeFormat("%b")))
                 .selectAll("text")
-                .style("text-anchor", "end")
-                .attr("dx", "-.8em")
-                .attr("dy", "-.55em")
-                .attr("transform", "rotate(-90)");
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end");
 
+            // Add y axis
             svg.append("g")
                 .call(d3.axisLeft(y));
 
-            // Vẽ các cột
-            svg.selectAll(".bar")
-                .data(countData)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function (d) { return x(d.precinct); })
-                .attr("y", function (d) { return y(d.count); })
-                .attr("width", x.bandwidth())
-                .attr("height", function (d) { return height - y(d.count); })
-                .attr("fill", "#69b3a2");
-
-            // Thêm label phía trên của mỗi cột
-            svg.selectAll(".text")
-                .data(countData)
-                .enter().append("text")
-                .attr("class", "label")
-                .attr("x", function (d) { return x(d.precinct) + x.bandwidth() / 2; })
-                .attr("y", function (d) { return y(d.count) - 5; }) // Dịch lên một chút để tránh chồng chéo
-                .text(function (d) { return d.count; })
-                .attr("text-anchor", "middle")
-                .attr("font-size", "12px")
-                .attr("fill", "black");
-
-            // Thêm tên cho trục x
+            // Add x axis label
             svg.append("text")
-                .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 60) + ")")
+                .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
                 .style("text-anchor", "middle")
-                .style("color", "red")
-                .style("font-weight", "bold")
-                .text("Phường");
+                .text("Month");
 
-            // Thêm tên cho trục y
+            // Add y axis label
             svg.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0 - margin.left)
                 .attr("x", 0 - (height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
-                .style("font-weight", "bold")
-                .text("Số lượng tai nạn Hit and Run");
-        }).catch(function (error) {
-            console.error("Error loading the data: " + error);
+                .text("Number of Hit and Run Accidents");
         });
-
-        function countAccidentsByPrecinct(data) {
-            var HitAndRunCounts = {};
-            
-            // Lặp qua mảng dữ liệu và tính số lượng tai nạn Hit and Run cho mỗi phường
-            data.forEach(function (d) {
-                var precinct = d["Precinct"];
-                var isHitAndRun = d["Hit and Run"];
-
-                // Kiểm tra nếu là tai nạn Hit and Run
-                if (isHitAndRun === "TRUE") {
-                    if (HitAndRunCounts[precinct]) {
-                        HitAndRunCounts[precinct]++;
-                    } else {
-                        HitAndRunCounts[precinct] = 1;
-                    }
-                }
-            });
-
-            // Chuyển đổi đối tượng thành mảng các đối tượng
-            var countData = Object.keys(HitAndRunCounts).map(function (key) {
-                return { precinct: key, count: HitAndRunCounts[key] };
-            });
-
-            return countData;
-        }
     </script>
+
+
 </body>
 
 </html>
