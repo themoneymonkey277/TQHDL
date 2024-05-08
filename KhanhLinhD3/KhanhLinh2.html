@@ -9,33 +9,71 @@
     <style>
         #chart {
             margin: auto;
-            margin-left: 50px; /* Adjust left margin */
+            margin-left: 50px;
+            /* Adjust left margin */
             /* Center the content within the div */
         }
+
         .bold-text {
             font-weight: bold;
         }
+
         .line {
-            stroke: #999; /* Black color */
-            stroke-width: 1.5; /* Increased line weight */
+            stroke: #999;
+            /* Black color */
+            stroke-width: 1.5;
+            /* Increased line weight */
         }
+
         /* Add hover effect */
         .arc:hover path {
-            fill-opacity: 0.8; /* Reduce opacity on hover */
+            fill-opacity: 0.8;
+            /* Reduce opacity on hover */
         }
+
         .arc:hover text {
-            font-size: 20px; /* Increase font size on hover */
+            font-size: 20px;
+            /* Increase font size on hover */
         }
     </style>
 
-    
+
 </head>
+
 <body>
+    <div style="margin-left: 50px;">
+        <h3">Câu hỏi 3: </h3>
+            <div style="margin-left: 30px;">
+                <p><b>Yêu cầu:</b> Tìm top 6 tác phẩm điêu khắc theo từng chất liệu </p>
+                <p><b>Thiết kế biểu đồ:</b></p>
+                <div style="margin-left: 20px;">
+                    <p>Với yêu cầu này, ta sử dụng 2 thuộc tính là Type để chất liệu của vật liệu và Medium để đếm số
+                        lượng
+                        các tác
+                        phẩm
+                        thuộc loại Sculpture.</p>
+                    <p>Với từng góc của hình tròn biểu thị số lượng tác phẩm điêu khắc theo từng chất liệu</p>
+                </div>
+            </div>
+    </div>
     <h1 style="text-align: center;">Biểu đồ top 6 tác phẩm điêu khắc theo từng chất liệu</h1>
-    <div id="chart"></div>
-    <div id="chart-description"></div>
+
+    <div style="margin-left: 350px;" id="chart"></div>
+    <div style="margin-left: 80px; margin-right: 130px;">
+        <p><b>Đánh giá biểu đồ: </b></p>
+        <div style="margin-left: 20px;">
+            <p>- Thông qua biểu đồ, các chất liệu có nhiều tác phẩm điêu khắc nhiều nhất theo thứ tự sau: Bronze (16),
+                Stone
+                (5), LimeStone (4), Bronze sculpture (3), Kinney and Scholz (3), Concrete (3). Với các thông tin được
+                cung
+                cấp
+                từ biểu đồ, ta có thể sử dụng những thông tin đó để tìm hiểu về thị trường chất liệu tác phẩm điêu khắc,
+                chọn ra
+                chất liệu ưa chuộng cũng như tối ưu nhất khi làm tác phẩm điêu khắc.</p>
+        </div>
+    </div>
     <script src="KL_task2.js">
-        
+
     </script>
 </body>
 

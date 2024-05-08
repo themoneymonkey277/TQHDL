@@ -26,34 +26,50 @@
 </head>
 
 <body>
-    <h3 style="margin-left: 50px;">Câu hỏi 3: </h3>
-    <h3 style="margin-left: 80px;">Yêu cầu: Báo cáo số lượng chấn thương trong các loại điều kiện ánh sáng</h3>
-    <h3 style="margin-left: 80px;">Thiết kế biểu đồ:</h3>
-    <p style="margin-left: 100px;">Ở trong yêu cầu này, ta sẽ sử dụng 2 thuộc tính là "Number of Injuries" và
-        "Illumination Description"
-        để đếm số lượng chấn thương trong các loại điều kiện ánh sáng
-    </p>
-    <p style="margin-left: 100px;">Ta sẽ sử dụng các kênh sau</p>
-    <p style="margin-left: 100px;">- Vị trí theo chiều dọc: Thuộc tính số lượng chấn thương</p>
-    <p style="margin-left: 100px;">- Vị trí theo chiều ngang: Thuộc tính điều kiện ánh sáng</p>
-    <p style="margin-left: 100px;">- Màu sắc để tăng hiệu quả biểu đạt</p>
-    <p style="margin-left: 100px;">Để thể hiện sự chênh lệch giữa các điều kiện ánh sáng, ta sử dụng biểu đồ cột
-    </p>
+    <div style="margin-left: 50px;">
+        <h3">Câu hỏi 3: </h3>
+            <div style="margin-left: 30px;">
+                <h3><b>Yêu cầu:</b> Báo cáo số lượng chấn thương trong các loại điều kiện ánh
+                    sáng
+                </h3>
+                <h3>Thiết kế biểu đồ:</h3>
+            </div>
+            <div style="margin-left: 50px;">
+                <p">Ở trong yêu cầu này, ta sẽ sử dụng 2 thuộc tính là "Number of Injuries"
+                    và
+                    "Illumination Description"
+                    để đếm số lượng chấn thương trong các loại điều kiện ánh sáng
+                    </p>
+                    <p">Ta sẽ sử dụng các kênh sau</p>
+                        <p">- Vị trí theo chiều dọc: Thuộc tính số lượng chấn thương</p>
+                            <p">- Vị trí theo chiều ngang: Thuộc tính điều kiện ánh sáng</p>
+                                <p">- Màu sắc để tăng hiệu quả biểu đạt</p>
+                                    <p">Để thể hiện sự chênh lệch giữa các điều kiện ánh sáng, ta sử dụng biểu đồ
+                                        cột
+                                        </p>
+            </div>
+    </div>
     <h1 style="text-align: center;">Biểu đồ số lượng chấn thương theo điều kiện ánh sáng</h1>
     <div id="chart"></div>
-    <h3 style="margin-left: 80px;">Đánh giá biểu đồ:</h3>
-    <div style="margin-left: 100px;">
-        <p>Ảnh hưởng của Ánh Sáng: Số liệu cho thấy mối liên hệ rõ ràng giữa điều kiện ánh sáng và số lượng chấn thương.
-        </p>
-        <p>Tăng cường An Toàn Giao Thông: Cần có biện pháp cải thiện ánh sáng và nhận thức để giảm thiểu rủi ro tai nạn
-            giao
-            thông, đặc biệt là vào các điều kiện ánh sáng thấp.</p>
-        <p>Điểm Mù và Nguy Hiểm: Cần chú ý đặc biệt đến các điểm mù và nguy hiểm trong điều kiện tối không có ánh sáng,
-            nơi
-            mà rủi ro tai nạn có thể tăng cao.</p>
-        <p>Nhận Thức và Hành Vi Lái Xe: Việc nắm bắt và hiểu rõ hơn về tác động của điều kiện ánh sáng có thể cải thiện
-            hành
-            vi lái xe và giúp tăng cường an toàn giao thông.</p>
+    <div style="margin-left: 80px;">
+        <h3>Đánh giá biểu đồ:</h3>
+        <div style="margin-left: 20px;">
+            <p>Ảnh hưởng của Ánh Sáng: Số liệu cho thấy mối liên hệ rõ ràng giữa điều kiện ánh sáng và số lượng chấn
+                thương.
+            </p>
+            <p>Tăng cường An Toàn Giao Thông: Cần có biện pháp cải thiện ánh sáng và nhận thức để giảm thiểu rủi ro tai
+                nạn
+                giao
+                thông, đặc biệt là vào các điều kiện ánh sáng thấp.</p>
+            <p>Điểm Mù và Nguy Hiểm: Cần chú ý đặc biệt đến các điểm mù và nguy hiểm trong điều kiện tối không có ánh
+                sáng,
+                nơi
+                mà rủi ro tai nạn có thể tăng cao.</p>
+            <p>Nhận Thức và Hành Vi Lái Xe: Việc nắm bắt và hiểu rõ hơn về tác động của điều kiện ánh sáng có thể cải
+                thiện
+                hành
+                vi lái xe và giúp tăng cường an toàn giao thông.</p>
+        </div>
     </div>
     <script>
         d3.csv("Traffic_Accidents.csv").then(function (data) {

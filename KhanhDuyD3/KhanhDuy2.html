@@ -46,38 +46,57 @@
 </head>
 
 <body>
-    <h3 style="margin-left: 50px;">Câu hỏi 4: </h3>
-    <h3 style="margin-left: 80px;">Yêu cầu: Báo cáo số lượng tai nạn Hit and Run qua từng tháng trong năm 2020</h3>
-    <h3 style="margin-left: 80px;">Thiết kế biểu đồ:</h3>
-    <p style="margin-left: 100px;">Ở trong yêu cầu này, ta sẽ sử dụng 2 thuộc tính là "Date and Time" và "Hit and Run"
-        để đếm số lượng tai nạn Hit and Run trong năm 2020
-    </p>
-    <p style="margin-left: 100px;">Ta sẽ sử dụng các kênh sau</p>
-    <p style="margin-left: 100px;">- Vị trí theo chiều dọc: Thuộc tính số lượng tai nạn Hit and Run</p>
-    <p style="margin-left: 100px;">- Vị trí theo chiều ngang: Thuộc tính thời gian (Tháng)</p>
-    <p style="margin-left: 100px;">- Màu sắc để tăng hiệu quả biểu đạt</p>
-    <p style="margin-left: 100px;">Để thể hiện thuộc tính thay đổi theo thời gian, ta thể hiện bằng biểu đồ vùng (Area)
-    </p>
+    <div style="margin-left: 50px;">
+        <h3>Câu hỏi 4: </h3>
+        <div style="margin-left: 30px;">
+            <h3>Yêu cầu: Báo cáo số lượng tai nạn Hit and Run qua từng tháng trong năm 2020
+            </h3>
+            <h3>Thiết kế biểu đồ:</h3>
+            <div style="margin-left: 20px;">
+                <p>Ở trong yêu cầu này, ta sẽ sử dụng 2 thuộc tính là "Date and Time" và
+                    "Hit
+                    and
+                    Run"
+                    để đếm số lượng tai nạn Hit and Run trong năm 2020
+                </p>
+                <p>Ta sẽ sử dụng các kênh sau</p>
+                <p>- Vị trí theo chiều dọc: Thuộc tính số lượng tai nạn Hit and Run</p>
+                <p>- Vị trí theo chiều ngang: Thuộc tính thời gian (Tháng)</p>
+                <p>- Màu sắc để tăng hiệu quả biểu đạt</p>
+                <p>Để thể hiện thuộc tính thay đổi theo thời gian, ta thể hiện bằng biểu đồ
+                    vùng
+                    (Area)
+                </p>
+            </div>
+        </div>
+    </div>
     <h1 style="text-align: center;">Hit and Run Accidents by Month (2020)</h1>
     <div id="chart-container">
         <svg id="chart" width="1000" height="500"></svg>
         <div id="tooltip" class="chart-tooltip"></div>
     </div>
-    <h3 style="margin-left: 80px;">Đánh giá biểu đồ:</h3>
-    <div style="margin-left: 100px; width: 3/4; margin-right: 100px;">
-        <p>1.Trend chung: Biểu đồ cho thấy một số biến động trong số lượng tai nạn hit and run qua các tháng trong năm.
-            Có
-            sự biến động đáng chú ý, ví dụ như sự tăng đột ngột từ tháng 4 đến tháng 5, sau đó lại giảm vào tháng 6 và
-            7.
-        </p>
-        <p>2.Đỉnh điểm và điểm thấp: Biểu đồ cung cấp thông tin về các đỉnh điểm (các tháng có số vụ tai nạn cao nhất)
-            và
-            điểm thấp (các tháng có số vụ tai nạn thấp nhất) trong năm. Điều này có thể giúp nhận biết các thời điểm có
-            nguy
-            cơ cao hơn và cần chú ý hơn.</p>
-        3.Thay đổi mức độ: Có thể nhận thấy một số tháng có số vụ tai nạn giảm đột ngột sau một thời gian tăng, hoặc
-        ngược
-        lại. Điều này có thể gợi ý về tác động của các biện pháp an toàn giao thông hoặc các yếu tố bên ngoài khác.</p>
+    <div style="margin-left: 80px;">
+        <h3>Đánh giá biểu đồ:</h3>
+        <div style="margin-left: 20px; width: 3/4; margin-right: 100px;">
+            <p>1.Trend chung: Biểu đồ cho thấy một số biến động trong số lượng tai nạn hit and run qua các tháng trong
+                năm.
+                Có
+                sự biến động đáng chú ý, ví dụ như sự tăng đột ngột từ tháng 4 đến tháng 5, sau đó lại giảm vào tháng 6
+                và
+                7.
+            </p>
+            <p>2.Đỉnh điểm và điểm thấp: Biểu đồ cung cấp thông tin về các đỉnh điểm (các tháng có số vụ tai nạn cao
+                nhất)
+                và
+                điểm thấp (các tháng có số vụ tai nạn thấp nhất) trong năm. Điều này có thể giúp nhận biết các thời điểm
+                có
+                nguy
+                cơ cao hơn và cần chú ý hơn.</p>
+            3.Thay đổi mức độ: Có thể nhận thấy một số tháng có số vụ tai nạn giảm đột ngột sau một thời gian tăng, hoặc
+            ngược
+            lại. Điều này có thể gợi ý về tác động của các biện pháp an toàn giao thông hoặc các yếu tố bên ngoài khác.
+            </p>
+        </div>
     </div>
     <script>
         // Define parseDate function

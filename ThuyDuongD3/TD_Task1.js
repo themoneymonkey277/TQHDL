@@ -4,7 +4,7 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
   // Thiết lập kích thước của biểu đồ
   var width = 800;
   var height = 500;
-  var margin = { top: 70, right: 20, bottom: 20, left: 180 };
+  var margin = { top: 70, right: 20, bottom: 20, left: 300 };
 
   var svg = d3.select("#chart-container-task1")
     .append("svg")
@@ -67,7 +67,7 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
 
   // Thêm tên cho trục x
   svg.append("text")
-    .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top) + ")")
+    .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top - 20) + ")")
     .style("text-anchor", "middle")
     .style("font-weight", "bold")
     .text("Nghệ sĩ");
@@ -76,7 +76,7 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
   // Thêm tên cho trục y
   svg.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
+    .attr("y", 0 - margin.left + 120)
     .attr("x", 0 - (height / 2))
     .attr("dy", "9em")
     .style("text-anchor", "middle")
