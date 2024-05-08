@@ -43,7 +43,7 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
   svg.selectAll(".bar")
     .data(countData)
     .enter().append("rect")
-    .attr("class", "bar")
+    .attr("class", "bar2")
     .attr("x", function (d) { return x(d.artist) + (x.bandwidth()) / 4; })
     .attr("y", function (d) { return y(d.count); })
     .attr("width", x.bandwidth() / 2)
