@@ -91,6 +91,9 @@ function countInjuriesBycollision(data) {
     data.forEach(function (d) {
         var collision = d["Collision Type Description"];
         var numberInjuries = +d["Number of Injuries"];
+        if (collision === "" || collision === "OTHER" || collision === "UNKNOWN") {
+            collision = "OTHER";
+        }
         if (numberInjuries > 0) {
             if (!injuriesCounts[collision]) {
                 injuriesCounts[collision] = 0;
