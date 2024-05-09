@@ -50,7 +50,7 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
     .attr("height", function (d) { return height - y(d.count); })
     .attr("fill", function (d, i) {
       // Chọn màu theo chỉ số của cột
-      return ["#ff7f0e", "#1f77b4", "#2ca02c"][i];
+      return ["#1f77b4", "#ff7f0e", "#2ca02c"][i];
     });
 
   // Thêm label phía trên của mỗi cột
