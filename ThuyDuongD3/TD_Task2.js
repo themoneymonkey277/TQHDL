@@ -121,9 +121,14 @@ function countAccidentsByIllumination(data) {
   var illuminationCounts = {};
 
   data.forEach(function (d) {
-    var illumination = d["Illumination Description"] || "NULL";
+    var illumination = d["Illumination Description"] || "Unknown";
     var dateTime = d["Date and Time"];
     var year = new Date(dateTime).getFullYear();
+
+    // Merge "other", "null", and "unknown" into a single category "Other"
+    if (illumination.toLowerCase() === "other" || illumination.toLowerCase() === "" || illumination.toLowerCase() === "unknown") {
+      illumination = "OTHER";
+    }
 
     if (year === 2020 || year === 2021) {
       if (!illuminationCounts[illumination]) {

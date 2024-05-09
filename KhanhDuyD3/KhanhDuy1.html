@@ -194,6 +194,10 @@
             data.forEach(function (d) {
                 var illumination = d["Illumination Description"];
                 var numberInjuries = d["Number of Injuries"]; // Adjust the data field name
+                // Merge null, others, and unknown into a single category "Others"
+                if (illumination === "" || illumination === "OTHER" || illumination === "UNKNOWN") {
+                    illumination = "OTHER";
+                }
                 if (numberInjuries > 0) {
                     if (!injuriesCounts[illumination]) {
                         injuriesCounts[illumination] = 0;
@@ -203,8 +207,8 @@
             });
 
             // Convert the object to an array of objects
-            var countData = Object.keys(injuriesCounts).map(function (key) { // Adjust variable names
-                return { illumination: key, count: injuriesCounts[key] }; // Adjust variable names
+            var countData = Object.keys(injuriesCounts).map(function (key) {
+                return { illumination: key, count: injuriesCounts[key] };
             });
 
             return countData;
