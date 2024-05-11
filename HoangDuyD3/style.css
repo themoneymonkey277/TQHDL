@@ -4,7 +4,6 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
 }
 
@@ -19,6 +18,7 @@ body {
     display: inline-block;
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-left: 340px;
     display: flex;
     /* Khoảng cách giữa biểu đồ task 1 và đầu trang */
 }
@@ -32,7 +32,8 @@ body {
 
 #chart-container-task2 {
     display: inline-block;
-    margin-top:20px;
+    margin-top: 20px;
+    margin-left: 400px;
     /* Khoảng cách giữa biểu đồ task 2 và đầu trang */
 }
 
@@ -65,6 +66,7 @@ svg {
     margin-top: 10px;
     /* Thêm khoảng cách 10px giữa nhãn trục x và trục hoành */
 }
+
 .bold-text {
     font-weight: bold;
 }
