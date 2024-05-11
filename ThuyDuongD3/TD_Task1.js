@@ -48,9 +48,9 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
     .attr("y", function (d) { return y(d.count); })
     .attr("width", x.bandwidth() / 2)
     .attr("height", function (d) { return height - y(d.count); })
-    .attr("fill", function (d, i) {
+    .attr("fill", function (d) {
       // Chọn màu theo chỉ số của cột
-      return ["#1f77b4", "#6baed6", "#9ecae1"][i];
+      return ["#1f77b4"];
     });
 
   // Thêm label phía trên của mỗi cột
