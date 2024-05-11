@@ -25,13 +25,30 @@ function countTop3SculptureArtists(data) {
 
     return countData;
 }
-
+function calculateTotal(obj) {
+    let total = 0;
+    for (let key in obj) {
+        total += obj[key];
+    }
+    return total;
+}
 d3.csv("Art_in_Public_Places.csv").then(function (data) {
     var countData = countTop3SculptureArtists(data);
     var width = 800;
     var height = 800;
     var margin = 80;
     var radius = Math.min(width, height) / 2 - margin;
+
+
+    var sculptureMediumCounts = {};
+    countData.forEach(function (d) {
+        sculptureMediumCounts[d.artist] = d.count;
+    });
+
+    var totalSculptureMediumCounts = calculateTotal(sculptureMediumCounts);
+    console.log("Tổng của sculptureMediumCounts:", totalSculptureMediumCounts);
+
+
 
     var svg = d3.select("#chart")
         .append("svg")
@@ -50,7 +67,6 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
     var arc = d3.arc()
         .innerRadius(radius * 0.5)
         .outerRadius(radius * 0.8);
-
     var arcs = svg.selectAll("arc")
         .data(pie(countData))
         .enter()
@@ -65,19 +81,19 @@ d3.csv("Art_in_Public_Places.csv").then(function (data) {
         .attr("class", "line")
         .attr("x1", function (d) { return arc.centroid(d)[0]; })
         .attr("y1", function (d) { return arc.centroid(d)[1]; })
-        .attr("x2", function (d) { return arc.centroid(d)[0] * 1.5; }) // Adjust the position of the line
-        .attr("y2", function (d) { return arc.centroid(d)[1] * 1.5; }); // Adjust the position of the line;
+        .attr("x2", function (d) { return arc.centroid(d)[0] * 1.5; }) 
+        .attr("y2", function (d) { return arc.centroid(d)[1] * 1.5; }); 
 
     arcs.append("text")
         .attr("class", "bold-text")
         .attr("transform", function (d) {
             var pos = arc.centroid(d);
-            pos[0] *= 1.5; // Adjust the position of the text
-            pos[1] *= 1.5; // Adjust the position of the text
+            pos[0] *= 1.5; 
+            pos[1] *= 1.5; 
             return "translate(" + pos + ")";
         })
         .attr("text-anchor", "middle")
-        .text(function (d) { return d.data.artist + " (" + d.data.count + ")"; });
+        .text(function (d) { return d.data.artist +" ("  + d.data.count+" - "+ ((d.data.count / totalSculptureMediumCounts) * 100).toFixed(2) + "%)"; });
 }).catch(function (error) {
     console.error("Error loading the data: " + error);
 });
