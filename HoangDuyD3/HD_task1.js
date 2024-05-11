@@ -70,9 +70,8 @@ d3.csv("Traffic_Accidents.csv").then(function (data) {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .text("Số lượng tai nạn Hit-and-run");
-    const colorScale = d3.scaleSequential()
-        .interpolator(d3.interpolateBlues)
-        .domain([sortedAccidents.length, 0]); // Đảo ngược thứ tự màu sắc
+    
+        const color = "#4e79a7";    
 
     svg.selectAll(".bar")
         .data(sortedAccidents)
@@ -83,7 +82,7 @@ d3.csv("Traffic_Accidents.csv").then(function (data) {
         .attr("y", d => y(d.count))
         .attr("width", x.bandwidth())
         .attr("height", d => height - y(d.count))
-        .attr("fill", (d, i) => colorScale(i));
+        .attr("fill",color);
 
     svg.selectAll(".bar-label")
         .data(sortedAccidents)
