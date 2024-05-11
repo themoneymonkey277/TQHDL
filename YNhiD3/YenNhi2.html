@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biểu đồ Thống kê Số Lượng Tác Phẩm theo Loại Nghệ Thuật</title>
+    <title>Biểu đồ biến động số lượng vụ tai nạn theo từng tháng của mỗi năm</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-        #chart-container {
-            margin: auto;
-            text-align: center;
-            background-color: #f0f0f0; /* Tô màu nền cho khung chứa biểu đồ */
-            padding: 20px; /* Thêm padding để tạo khoảng cách với biểu đồ */
-        }
-
-        .bar {
-            fill: steelblue;
-        }
-
-        .bar:hover {
-            fill: #4682b4;
+        /* Thêm các style cho biểu đồ */
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2px;
         }
 
         .axis text {
@@ -41,106 +34,249 @@
         .bold-text {
             font-weight: bold;
         }
+
+        .dot {
+            fill: steelblue; /* Màu của chấm tròn */
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .dot-label {
+            font-size: 12px;
+            fill: black;
+            text-anchor: middle;
+        }
     </style>
 </head>
+
 <body>
-    <h1 style="text-align: center;">Biểu đồ Thống kê Số Lượng Tác Phẩm theo Loại Hình Nghệ Thuật</h1>
+    <div style="margin-left: 50px;">
+        <h3">Câu hỏi 8: </h3>
+            <div style="margin-left: 30px;">
+                <h3><b>Yêu cầu:</b> Báo cáo số lượng vụ tai nạn theo từng tháng của năm
+                </h3>
+                <h3>Thiết kế biểu đồ:</h3>
+            </div>
+            <div style="margin-left: 50px;">
+                <p">Ở trong yêu cầu này, sử dụng thuộc tính Date and Time để tính số lượng vụ tai nạn xảy ra theo tháng và năm
+                    </p>
+                    <p">Ta sẽ sử dụng các kênh sau</p>
+                        <p">- Vị trí theo chiều dọc: Thuộc tính số lượng các vụ tai nạn</p>
+                            <p">- Vị trí theo chiều ngang: Thuộc tính tháng</p>
+                                <p">- Sử dụng filter lọc theo năm để xem của từng năm</p>
+            </div>
+    </div>
+    <h1 style="text-align: center;">Biểu đồ biến động số lượng vụ tai nạn theo từng tháng của mỗi năm</h1>
     <div id="chart-container">
-        <div id="chart"></div>
+        <label for="yearDropdown">Chọn năm:</label>
+        <select id="yearDropdown"></select>
     </div>
-    <div class="comment-container">
-        <p class="comment-text">
-            <span class="bold-text">PHÂN TÍCH BIỂU ĐỒ:</span> <br>
-            • Biểu đồ thống kê số lượng tác phẩm theo loại hình nghệ thuật và được sắp xếp từ nhiều đến ít<br>
-            • Quan sát biểu đồ cho thấy rằng "Sculpture" là loại hình nghệ thuật phố biến nhất, với số lượng tác phẩm nhiều nhất so với các loại hình khác. <br>
-            • Ngược lại, các loại hình như Stained Glass, Relief, Bronzes, Furniture, Sculpture/Fountain, Murals là những loại hình có ít tác phẩm nhất. <br>
-            • Ngoài ra dựa vào biểu đồ ta cũng có thể xem được số lượng tác phẩm cụ thể của các loại hình bằng cách di chuột vào từng loại hình. 
-        </p>
+    <div style="margin-left: 80px;">
+        <h3>Đánh giá biểu đồ:</h3>
+        <div style="margin-left: 20px;">
+            <p>Biểu đồ giúp phân tích xu hướng biến động của số lượng vụ tai nạn qua các tháng và năm.
+            </p>
+            <p>Bằng cách phân tích biểu đồ, có thể nhận ra các mô hình hoặc xu hướng tăng giảm đột ngột trong số lượng vụ tai nạn trong các tháng cụ thể hoặc qua các năm.</p>
+        </div>
     </div>
+
     <script>
-        d3.csv("Art_in_Public_Places.csv").then(function(data) {
-            // Tạo đối tượng để lưu trữ số lượng tác phẩm của mỗi loại nghệ thuật
-            var typeCounts = {};
-
-            // Lặp qua dữ liệu và tính số lượng tác phẩm của mỗi loại nghệ thuật
+        d3.csv("Traffic_Accidents.csv").then(function(data) {
+            console.log(data);
+            // Tiền xử lý dữ liệu: Trích xuất thông tin về tháng và năm từ cột "Date and Time"
             data.forEach(function(d) {
-                var type = d.Type;
-                if (!typeCounts[type]) {
-                    typeCounts[type] = 0;
+                var dateTime = new Date(d["Date and Time"]);
+                d.month = dateTime.getMonth() + 1; // Lấy tháng (từ 1 đến 12)
+                d.year = dateTime.getFullYear(); // Lấy năm
+            });
+
+            // Filter và tính tổng số vụ tai nạn cho mỗi tháng của mỗi năm            
+            var accidentsByMonthAndYear = {};
+
+            data.forEach(function(d) {
+                var year = d.year;
+                var month = d.month;
+                if (!accidentsByMonthAndYear[year]) {
+                    accidentsByMonthAndYear[year] = {};
                 }
-                typeCounts[type]++;
+                if (!accidentsByMonthAndYear[year][month]) {
+                    accidentsByMonthAndYear[year][month] = 0;
+                }
+                accidentsByMonthAndYear[year][month]++;
             });
 
-            // Chuyển đổi dữ liệu thành mảng các đối tượng {type, count}
-            var chartData = Object.keys(typeCounts).map(function(type) {
-                return { type: type, count: typeCounts[type] };
+            // Tạo danh sách các năm cho dropdown
+            var years = Object.keys(accidentsByMonthAndYear);
+            console.log(years);
+            var yearDropdown = d3.select("#yearDropdown");
+            yearDropdown.selectAll("option")
+                .data(years)
+                .enter().append("option")
+                .attr("value", function(d) { return d; })
+                .text(function(d) { return d; });
+
+            // Hàm để tính trung bình số vụ tai nạn cho từng tháng của mỗi năm
+            function calculateAverageAccidentsByMonth(year) {
+                var accidentsByMonth = accidentsByMonthAndYear[year];
+                var averageData = [];
+                for (var month = 1; month <= 12; month++) {
+                    var totalAccidents = accidentsByMonth[month] || 0;
+                    averageData.push({ month: month, accidents: totalAccidents });
+                }
+                return averageData;
+            }
+
+            // Hàm để vẽ đường biểu đồ cho dữ liệu trung bình số vụ tai nạn của mỗi năm
+            function drawAverageLine(year) {
+                var averageData = calculateAverageAccidentsByMonth(year);
+                var line = d3.line()
+                    .x(function(d) { return x(d.month); })
+                    .y(function(d) { return y(d.accidents); });
+
+                // Vẽ đường trung bình
+                svg.append("path")
+                    .datum(averageData)
+                    .attr("class", "average-line")
+                    .attr("d", line);
+            }
+
+            // Hàm để cập nhật biểu đồ khi chọn năm
+            function updateChart(year) {
+                var yearData = accidentsByMonthAndYear[year];
+                drawLineChart(yearData);
+                drawAverageLine(year);
+            }
+
+            // Thêm sự kiện lắng nghe khi chọn năm từ dropdown
+            yearDropdown.on("change", function() {
+                var selectedYear = this.value;
+                updateChart(selectedYear);
             });
 
-            chartData.sort(function(a,b)
-            {
-                return b.count-a.count;
-            });
-            // Tạo biểu đồ
-            var svgWidth = 1000; // Đã thay đổi kích thước
-            var svgHeight = 500;
-            var margin = { top: 20, right: 20, bottom: 50, left: 70 };
-            var width = svgWidth - margin.left - margin.right;
-            var height = svgHeight - margin.top - margin.bottom;
+            // Hàm để vẽ biểu đồ line chart
+            function drawLineChart(yearData) {
+                // Xóa biểu đồ cũ (nếu có)
+                d3.select("#line-chart").remove();
 
-            var svg = d3.select("#chart")
-                .append("svg")
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
+                // Tạo biểu đồ mới
+                var svgWidth = 900;
+                var svgHeight = 500;
+                var margin = { top: 50, right: 50, bottom: 50, left: 50 };
+                var width = svgWidth - margin.left - margin.right;
+                var height = svgHeight - margin.top - margin.bottom;
 
-            var x = d3.scaleBand()
-                .range([0, width])
-                .padding(0.1)
-                .domain(chartData.map(function(d) { return d.type; }));
+                var svg = d3.select("#chart-container")
+                    .append("svg")
+                    .attr("id", "line-chart")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
 
-            var y = d3.scaleLinear()
-                .range([height, 0])
-                .domain([0, d3.max(chartData, function(d) { return d.count; })]);
+                var g = svg.append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            var g = svg.append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                // Xử lý dữ liệu để chuyển nó thành mảng các đối tượng { month, accidents }
+                var data = Object.keys(yearData).map(function(month) {
+                    return { month: parseInt(month), accidents: yearData[month] };
+                });
 
-            g.selectAll(".bar")
-                .data(chartData)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function(d) { return x(d.type); })
-                .attr("y", function(d) { return y(d.count); })
-                .attr("width", x.bandwidth())
-                .attr("height", function(d) { return height - y(d.count); })
-                .append("title") // Chú thích cho cột
-                .text(function(d) { return d.count; });
+                // Xác định phạm vi của trục x và trục y
+                var x = d3.scaleLinear().range([0, width]);
+                var y = d3.scaleLinear().range([height, 0]);
 
-            g.append("g")
-                .attr("class", "x-axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x));
+                x.domain(d3.extent(data, function(d) { return d.month; }));
+                y.domain([0, d3.max(data, function(d) { return d.accidents; })]);
 
-            g.append("g")
-                .attr("class", "y-axis")
-                .call(d3.axisLeft(y));
+                // Tạo đường biểu đồ
+                var line = d3.line()
+                    .x(function(d) { return x(d.month); })
+                    .y(function(d) { return y(d.accidents); });
 
-            // Thêm nhãn cho trục x
-            svg.append("text")
-                .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 40) + ")")
-                .style("text-anchor", "middle")
-                .style("font-weight", "bold")
-                .text("Loại Nghệ Thuật");
+                // Vẽ đường biểu đồ
+                g.append("path")
+                    .datum(data)
+                    .attr("class", "line")
+                    .attr("d", line);
 
-            // Thêm nhãn cho trục y
-            svg.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - margin.left)
-                .attr("x", 0 - (height / 2))
-                .attr("dy", "5em")
-                .style("font-weight", "bold")
-                .style("text-anchor", "middle")
-                .text("Số Lượng Tác Phẩm");
+                // Thêm chấm tròn tại mỗi điểm dữ liệu
+                g.selectAll(".dot")
+                    .data(data)
+                    .enter().append("circle")
+                    .attr("class", "dot")
+                    .attr("cx", function(d) { return x(d.month); })
+                    .attr("cy", function(d) { return y(d.accidents); })
+                    .attr("r", 5) // Đường kính của chấm tròn
+                    .on("mouseover", function(d) {
+                        var coordinates = d3.mouse(this);
+                        var xPosition = coordinates[0];
+                        var yPosition = coordinates[1];
+                        tooltip.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        tooltip.html("Số vụ tai nạn: " + d.accidents)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function(d) {
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+
+                // Thêm nhãn cho mỗi điểm dữ liệu
+                g.selectAll(".dot-label")
+                    .data(data)
+                    .enter().append("text")
+                    .attr("class", "dot-label")
+                    .attr("x", function(d) { return x(d.month); })
+                    .attr("y", function(d) { return y(d.accidents) - 10; }) // Điều chỉnh vị trí nhãn
+                    .text(function(d) { return d.accidents; });
+
+                // Thêm trục x
+                g.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x).ticks(12).tickFormat(function(d) { return "Tháng " + d; }));
+
+                // Thêm trục y
+                g.append("g")
+                    .call(d3.axisLeft(y));
+
+                // Thêm tên cho trục x
+                svg.append("text")
+                    .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 40) + ")")
+                    .style("text-anchor", "middle")
+                    .text("Tháng");
+
+                // Thêm tên cho trục y
+                svg.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 0 - margin.left)
+                    .attr("x", 0 - (height / 2))
+                    .attr("dy", "3.8em")
+                    .style("text-anchor", "middle")
+                    .style("font-weight", "bold")
+                    .text("Số lượng vụ tai nạn");
+
+                // Tạo một tooltip
+                var tooltip = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
+            }
+
+            // Gọi hàm updateChart() để vẽ biểu đồ cho năm đầu tiên trong dữ liệu khi trang được tải
+            updateChart(years[0]);
+
+        }).catch(function(error) {
+            console.error("Error loading the data: " + error);
         });
     </script>
 </body>
+
 </html>
