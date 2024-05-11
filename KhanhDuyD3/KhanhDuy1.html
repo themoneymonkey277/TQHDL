@@ -13,13 +13,64 @@
             text-align: center;
             /* Center the content within the div */
         }
+
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #aaa;
+            padding: 10px;
+            border-radius: 5px;
+            pointer-events: none;
+        }
     </style>
 </head>
 
 <body>
+    <div style="margin-left: 50px;">
+        <h3">Câu hỏi 3: </h3>
+            <div style="margin-left: 30px;">
+                <h3><b>Yêu cầu:</b> Báo cáo số lượng chấn thương trong các loại điều kiện ánh
+                    sáng
+                </h3>
+                <h3>Thiết kế biểu đồ:</h3>
+            </div>
+            <div style="margin-left: 50px;">
+                <p">Ở trong yêu cầu này, ta sẽ sử dụng 2 thuộc tính là "Number of Injuries"
+                    và
+                    "Illumination Description"
+                    để đếm số lượng chấn thương trong các loại điều kiện ánh sáng
+                    </p>
+                    <p">Ta sẽ sử dụng các kênh sau</p>
+                        <p">- Vị trí theo chiều dọc: Thuộc tính số lượng chấn thương</p>
+                            <p">- Vị trí theo chiều ngang: Thuộc tính điều kiện ánh sáng</p>
+                                <p">- Màu sắc để tăng hiệu quả biểu đạt</p>
+                                    <p">Để thể hiện sự chênh lệch giữa các điều kiện ánh sáng, ta sử dụng biểu đồ
+                                        cột
+                                        </p>
+            </div>
+    </div>
     <h1 style="text-align: center;">Biểu đồ số lượng chấn thương theo điều kiện ánh sáng</h1>
     <div id="chart"></div>
-
+    <div style="margin-left: 80px;">
+        <h3>Đánh giá biểu đồ:</h3>
+        <div style="margin-left: 20px;">
+            <p>Ảnh hưởng của Ánh Sáng: Số liệu cho thấy mối liên hệ rõ ràng giữa điều kiện ánh sáng và số lượng chấn
+                thương.
+            </p>
+            <p>Tăng cường An Toàn Giao Thông: Cần có biện pháp cải thiện ánh sáng và nhận thức để giảm thiểu rủi ro tai
+                nạn
+                giao
+                thông, đặc biệt là vào các điều kiện ánh sáng thấp.</p>
+            <p>Điểm Mù và Nguy Hiểm: Cần chú ý đặc biệt đến các điểm mù và nguy hiểm trong điều kiện tối không có ánh
+                sáng,
+                nơi
+                mà rủi ro tai nạn có thể tăng cao.</p>
+            <p>Nhận Thức và Hành Vi Lái Xe: Việc nắm bắt và hiểu rõ hơn về tác động của điều kiện ánh sáng có thể cải
+                thiện
+                hành
+                vi lái xe và giúp tăng cường an toàn giao thông.</p>
+        </div>
+    </div>
     <script>
         d3.csv("Traffic_Accidents.csv").then(function (data) {
             var countData = countInjuriesByIllumination(data);
@@ -74,7 +125,27 @@
                 .attr("y", function (d) { return y(d.count); })
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d.count); })
-                .attr("fill", "#69b3a2");
+                .attr("fill", "#69b3a2")
+                .on("mouseover", function (event, d) {
+                    d3.select(this).attr("fill", "#ff7f0e");
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html("<strong>Loại chiếu sáng:</strong> " + d.illumination + "<br><strong>Số lượng chấn thương:</strong> " + d.count)
+                        .style("left", (event.pageX) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mousemove", function (event) {
+                    var mouseCoords = d3.pointer(event);
+                    tooltip.style("left", (mouseCoords[0] + 180) + "px")
+                        .style("top", (mouseCoords[1] + 350) + "px");
+                })
+                .on("mouseout", function (d) {
+                    d3.select(this).attr("fill", "#69b3a2");
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
 
             // Add labels on top of each bar
             svg.selectAll(".text")
@@ -105,6 +176,13 @@
                 .style("text-anchor", "middle")
                 .style("font-weight", "bold")
                 .text("Số lượng chấn thương khi xảy ra va chạm");
+
+            // Thêm biến global cho tooltip
+            var tooltip = d3.select("#chart")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
         }).catch(function (error) {
             console.error("Error loading the data: " + error);
         });
@@ -116,6 +194,10 @@
             data.forEach(function (d) {
                 var illumination = d["Illumination Description"];
                 var numberInjuries = d["Number of Injuries"]; // Adjust the data field name
+                // Merge null, others, and unknown into a single category "Others"
+                if (illumination === "" || illumination === "OTHER" || illumination === "UNKNOWN") {
+                    illumination = "OTHER";
+                }
                 if (numberInjuries > 0) {
                     if (!injuriesCounts[illumination]) {
                         injuriesCounts[illumination] = 0;
@@ -125,8 +207,8 @@
             });
 
             // Convert the object to an array of objects
-            var countData = Object.keys(injuriesCounts).map(function (key) { // Adjust variable names
-                return { illumination: key, count: injuriesCounts[key] }; // Adjust variable names
+            var countData = Object.keys(injuriesCounts).map(function (key) {
+                return { illumination: key, count: injuriesCounts[key] };
             });
 
             return countData;

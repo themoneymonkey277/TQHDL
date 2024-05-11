@@ -1,33 +1,25 @@
 body {
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
 }
 
 .task-1-wrapper {
-  position: relative;
   width: 100%;
-  display: flex;
-  justify-content: start;
+  justify-content: center;
 }
 
 .task-2-wrapper {
-  position: relative;
   width: 100%;
-  display: flex;
-  justify-content: start;
-  padding-left: 10%;
+  justify-content: center;
 }
 
 #chart-container-task1 {
-  display: inline-block;
+  /* display: inline-block; */
   margin-top: 30px;
 }
 
 #chart-container-task2 {
-  display: inline-block;
+  /* display: inline-block; */
   margin-top: 30px;
 }
 
@@ -39,18 +31,4 @@ svg {
 .bar2:hover {
   fill: red;
   cursor: pointer;
-}
-
-.review1 {
-  width: 400px;
-  position: absolute;
-  right: 5%;
-  bottom: 30%;
-}
-
-.review2 {
-  width: 400px;
-  position: absolute;
-  right: 6%;
-  bottom: 30%;
 }
